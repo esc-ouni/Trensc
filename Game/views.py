@@ -4,7 +4,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def index(Request):
-    return HttpResponse("Hello !")
+    return render(Request, 'Game/Welcome.html')
 
 def index_hi(Request, name):
     return HttpResponse(f"Hello {name.capitalize()} !")
