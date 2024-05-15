@@ -48,9 +48,54 @@
         .btc-high-low span {
             display: block;
         }
+        .tweet{
+            background-color: rgb(0, 157, 255);
+            color: white;
+            height: 50px;
+            width: 100px;
+            border-radius: 60px;
+            border: none;
+            font-size: 22px;
+            font-weight:bold;
+            position: absolute;
+            top:  3%;
+            left: 85%;
+        }
+        .tweet:hover {
+            background-color: rgb(8, 151, 223);
+            color: rgb(152, 166, 166);
+            size: 70%;
+            font-size: 23px;
+        }
+        .tweet:active {
+            background-color: rgb(133, 238, 72);
+            color: rgb(244, 249, 249);
+            height: 60px;
+            width: 110px;
+            font-size: 23px;
+        }
+
+        .bjoin{
+            background-color: rgba(0, 157, 255, 0);
+            color: white;
+            height: 50px;
+            width: 100px;
+            border-radius: 60px;
+            /* border: none; */
+            border-color:aqua;
+            border-start-end-radius: 10%;
+            border-bottom-left-radius: 10%;
+            font-size: 22px;
+            font-weight:bold;
+            position: absolute;
+            top:  3%;
+            left: 73%;
+        }
     </style>
 </head>
 <body>
+    <button class="tweet">Tweet</button>
+    <button class="bjoin">JOIN</button>
     <div class="btc-container">
         <h1 class="btc-header">Bitcoin BTC</h1>
         <div class="btc-price">
