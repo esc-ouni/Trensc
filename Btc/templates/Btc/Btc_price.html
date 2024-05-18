@@ -66,6 +66,8 @@
             color: rgb(152, 166, 166);
             size: 70%;
             font-size: 23px;
+            box-shadow: red;
+            text-shadow: #38e12f;
         }
         .tweet:active {
             background-color: rgb(133, 238, 72);
@@ -90,25 +92,49 @@
             top:  3%;
             left: 73%;
         }
+        .bjoin:hover{
+            background-color: blue;
+            border-color: rgb(255, 255, 255);
+        }
+        .bjoin:active{
+            background-color: rgb(0, 128, 255);
+            border-color: rgb(252, 252, 252);
+        }
     </style>
 </head>
+ 
+
 <body>
     <button class="tweet">Tweet</button>
     <button class="bjoin">JOIN</button>
     <div class="btc-container">
         <h1 class="btc-header">Bitcoin BTC</h1>
         <div class="btc-price">
-            {{ btc_to_mad }} MAD
+            <span id="btc-price">{{ btc_to_mad }}</span> MAD
         </div>
-        <!-- <div class="btc-change">
-            24h % {{ change_percentage }}
-        </div> -->
         <div class="btc-low">
-            <span>24H Low  {{ low_24h }} MAD</span>
+            <span>24H Low  <span id="btc-low">{{ low_24h }}</span> MAD</span>
         </div>
         <div class="btc-high">
-            <span>24H High {{ high_24h }} MAD</span>
+            <span>24H High <span id="btc-high">{{ high_24h }}</span> MAD</span>
         </div>
     </div>
+
+    <script>
+        function fetchBTCPrice() {
+            fetch('/btc-price-json/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('btc-price').innerText = data.btc_to_mad;
+                    document.getElementById('btc-low').innerText   = data.low_24h;
+                    document.getElementById('btc-high').innerText  = data.high_24h;
+                })
+                .catch(error => console.error('Error fetching BTC price:', error));
+        }
+
+        setInterval(fetchBTCPrice, 10000);
+        fetchBTCPrice();
+    </script>
 </body>
+    
 </html>
