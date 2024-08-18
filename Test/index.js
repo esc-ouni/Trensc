@@ -6,6 +6,8 @@
 
 // THREE  = require("three")
 
+import * as THREE from 'three';
+
 console.log("THREE           :", THREE);
 console.log("Three.js version:", THREE.REVISION);
 
