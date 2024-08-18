@@ -4,26 +4,24 @@
 // - geometry
 // - material
 
-// THREE  = require("three")
-
 import * as THREE from 'three';
-
-console.log("THREE           :", THREE);
-console.log("Three.js version:", THREE.REVISION);
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
 const scene = new THREE.Scene();
-console.log("Scene created:", scene);
 
-const geometry = new THREE.BoxGeometry(2, 2, 2);
-console.log("Geometry created:", geometry);
+const geometry = new THREE.SphereGeometry(2, 70, 70);
 
-const material = new THREE.MeshBasicMaterial({ color: "blue" });
-console.log("Material created:", material);
+const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide});
+// const material = new THREE.MeshBasicMaterial({ color: 'white', flatShading : true});
 
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
-console.log("Mesh added to scene:", mesh);
+
+const light = new THREE.DirectionalLight( 0xFFFFFF );
+scene.add( light );
+const helper = new THREE.DirectionalLightHelper( light, 5 );
+scene.add( helper );
 
 const aspect = {
     width: window.innerWidth,
@@ -36,10 +34,15 @@ camera.position.z = 5;
 scene.add(camera);
 console.log("Camera created and added to scene:", camera);
 
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const canvas = document.querySelector('.Renderer');
     console.log('Canvass selected:', canvas);
-
+    
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 0, 0);
+    controls.update();
+    
     const renderer = new THREE.WebGLRenderer({ canvas: canvas });
     renderer.setSize(aspect.width, aspect.height);
     console.log("Renderer created and size set:", renderer);
@@ -57,4 +60,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
     animate(camera)
 
 });
-
