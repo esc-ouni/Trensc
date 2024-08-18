@@ -4,7 +4,9 @@
 // - geometry
 // - material
 
+// THREE  = require("three")
 
+console.log("THREE           :", THREE);
 console.log("Three.js version:", THREE.REVISION);
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
