@@ -44,7 +44,7 @@ const canvas = document.getElementById('Renderer');
 
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 
-renderer.setSize(aspect.width, aspect.height);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 const controls = new OrbitControls(camera, canvas);
 
@@ -56,10 +56,10 @@ const clock = new THREE.Clock();
 function animate(){
     
     const c = clock.getDelta() * 10
-
+    
     mesh.position.x += (0.05  * c);
     mesh.position.y += ((Math.sin((clock.getElapsedTime() * 1.2 )% 180))  * c);
-
+    
     mesh.rotation.x += (0.003 * c);
     mesh.rotation.y += (0.003 * c);
     mesh.rotation.z += (0.003 * c);
@@ -68,6 +68,9 @@ function animate(){
         mesh.position.x = -20
     
     controls.update();
+    camera.aspect = window.innerWidth/ window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
