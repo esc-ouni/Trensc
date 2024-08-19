@@ -29,8 +29,13 @@ const aspect = {
 };
 
 const camera = new THREE.PerspectiveCamera(90, aspect.width / aspect.height, 1, 2000);
+camera.lookAt(mesh.position)
 camera.position.z = 5;
 scene.add(camera);
+
+
+const axeshelper = new THREE.AxesHelper(25)
+scene.add(axeshelper);
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -44,12 +49,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const renderer = new THREE.WebGLRenderer({ canvas: canvas });
     renderer.setSize(aspect.width, aspect.height);
     
+    console.log(mesh.quaternion);
+
     function animate(){
         requestAnimationFrame(animate);
+        mesh.position.x += 0.05
+        
         mesh.rotation.x += 0.003
         mesh.rotation.y += 0.003
         mesh.rotation.z += 0.003
     
+        if (mesh.position.x > 5)
+            mesh.position.x = -7
+
         renderer.render(scene, camera);
         console.log("Scene rendered");
     }
