@@ -30,9 +30,9 @@ const aspect = {
 
 const camera = new THREE.PerspectiveCamera(90, aspect.width / aspect.height, 1, 2000);
 camera.lookAt(mesh.position)
-camera.position.z = 8;
+camera.position.x = 8;
 camera.position.y = 8;
-camera.position.x = -8;
+camera.position.z = 16;
 scene.add(camera);
 
 
@@ -59,6 +59,7 @@ function animate(){
 
     mesh.position.x += (0.05  * c);
     mesh.position.y += ((Math.sin((clock.getElapsedTime() * 1.2 )% 180))  * c);
+
     mesh.rotation.x += (0.003 * c);
     mesh.rotation.y += (0.003 * c);
     mesh.rotation.z += (0.003 * c);
