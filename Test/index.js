@@ -5,15 +5,15 @@
 // - material
 
 import * as THREE from 'three';
+
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
 const scene = new THREE.Scene();
 
-const geometry = new THREE.SphereGeometry(2, 70, 70);
+const geometry = new THREE.SphereGeometry(2, 90, 90);
 
-const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide});
-// const material = new THREE.MeshBasicMaterial({ color: 'white', flatShading : true});
+const material = new THREE.MeshPhongMaterial({ wireframe : true, color: 'white', flatShading : true, side: THREE.DoubleSide});
 
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -27,17 +27,15 @@ const aspect = {
     width: window.innerWidth,
     height: window.innerHeight,
 };
-console.log("Aspect ratio:", aspect);
 
 const camera = new THREE.PerspectiveCamera(90, aspect.width / aspect.height, 1, 2000);
 camera.position.z = 5;
 scene.add(camera);
-console.log("Camera created and added to scene:", camera);
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    const canvas = document.querySelector('.Renderer');
-    console.log('Canvass selected:', canvas);
+    const canvas = document.getElementById('Renderer');
+    camera.aspect = window.innerWidth / window.innerHeight;
     
     const controls = new OrbitControls(camera, canvas);
     controls.target.set(0, 0, 0);
@@ -45,7 +43,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     const renderer = new THREE.WebGLRenderer({ canvas: canvas });
     renderer.setSize(aspect.width, aspect.height);
-    console.log("Renderer created and size set:", renderer);
     
     function animate(){
         requestAnimationFrame(animate);
