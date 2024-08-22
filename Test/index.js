@@ -14,7 +14,13 @@ const ligui = new dat_gui.GUI()
 
 
 const textureloader = new THREE.TextureLoader();
-const texture = textureloader.load('./Abstract_010_height.png');
+const texture1 = textureloader.load('./Abstract/Abstract_010_ambientOcclusion.jpg');
+const texture2 = textureloader.load('./Abstract/Abstract_010_basecolor.jpg');
+const texture3 = textureloader.load('./Abstract/Abstract_010_height.png');
+const texture4 = textureloader.load('./Abstract/Abstract_010_normal.jpg');
+const texture5 = textureloader.load('./Abstract/Abstract_010_roughness.jpg');
+const texture6 = textureloader.load('./Abstract/Material_1374.jpg');
+
 
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
@@ -22,7 +28,17 @@ const scene = new THREE.Scene();
 
 const geometry = new THREE.SphereGeometry(2, 90, 90);
 
-const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide, map: texture});
+// const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide});
+
+const material = new THREE.MeshStandardMaterial({
+    map: texture2, // Base color
+    normalMap: texture4, // Normal map
+    roughnessMap: texture5, // Roughness map
+    aoMap: texture1, // Ambient occlusion map
+    displacementMap: texture3, // Height map
+    displacementScale: 0.1, // Adjust the height effect
+    side: THREE.DoubleSide
+});
 
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -95,7 +111,7 @@ function animate(){
     const c = clock.getDelta() * 10
     
     mesh.position.x += (0.05  * c);
-    mesh.position.y = Math.sin(clock.getElapsedTime() * 4) * 4;
+    mesh.position.y = Math.sin(clock.getElapsedTime() * 2) * 5;
     
     mesh.rotation.x += (0.003 * c);
     mesh.rotation.y += (0.003 * c);
