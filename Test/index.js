@@ -12,14 +12,10 @@ import * as dat_gui from "dat.gui";
 
 const ligui = new dat_gui.GUI()
 
-const image = new Image()
-image.src = './Abstract_010_height.png';
 
-const texture = new THREE.Texture(image);
+const textureloader = new THREE.TextureLoader();
+const texture = textureloader.load('./Abstract_010_height.png');
 
-image.onload = () => {
-    texture.needsUpdate = true;
-}
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
 const scene = new THREE.Scene();
