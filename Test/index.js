@@ -10,19 +10,23 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import * as lil_gui from 'lil-gui';
 import * as dat_gui from "dat.gui";
 
-console.log(dat_gui)
 const ligui = new dat_gui.GUI()
 
-// console.log(lil_gui)
-// const ligui = new lil_gui.GUI()
+const image = new Image()
+image.src = './Abstract_010_height.png';
 
+const texture = new THREE.Texture(image);
+
+image.onload = () => {
+    texture.needsUpdate = true;
+}
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
 const scene = new THREE.Scene();
 
 const geometry = new THREE.SphereGeometry(2, 90, 90);
 
-const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide});
+const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide, map: texture});
 
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
