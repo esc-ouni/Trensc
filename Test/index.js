@@ -30,7 +30,7 @@ const geometry = new THREE.SphereGeometry(2, 90, 90);
 
 // const material = new THREE.MeshPhongMaterial({ color: 'white', flatShading : true, side: THREE.DoubleSide});
 
-const material = new THREE.MeshStandardMaterial({
+const material = new THREE.MeshPhongMaterial({
     map: texture2, // Base color
     normalMap: texture4, // Normal map
     roughnessMap: texture5, // Roughness map
