@@ -22,6 +22,11 @@ const texture = textureloader.load('./Abstract/ball2.jpeg');
 // const texture5 = textureloader.load('./Abstract/Abstract_010_roughness.jpg');
 // const texture6 = textureloader.load('./Abstract/Material_1374.jpg');
 
+//yellow
+// const texture1 = textureloader.load('./Models/ping_pong_ball/textures/Material_40_baseColor.png');
+// const texture2 = textureloader.load('./Models/ping_pong_ball/textures/Material_40_metallicRoughness.png');
+// const texture3 = textureloader.load('./Models/ping_pong_ball/textures/Material_40_normal.png');
+
 
 
 // Scene, Mesh (Geometry and Material), Camera, Renderer
@@ -32,12 +37,9 @@ const geometry = new THREE.SphereGeometry(2, 90, 90);
 const material = new THREE.MeshStandardMaterial({ color: 'white', side: THREE.DoubleSide, map:texture});
 
 // const material = new THREE.MeshPhongMaterial({
-//     map: texture2, // Base color
-//     normalMap: texture4, // Normal map
-//     roughnessMap: texture5, // Roughness map
-//     aoMap: texture1, // Ambient occlusion map
-//     displacementMap: texture3, // Height map
-//     displacementScale: 0.1, // Adjust the height effect
+//     map: texture1, // Base color
+//     normalMap: texture3, // Normal map
+//     roughnessMap: texture2, // Roughness map
 //     side: THREE.DoubleSide
 // });
 
@@ -106,6 +108,10 @@ geometry2.setAttribute('position', positionAttribute)
 const mesh2 = new THREE.Mesh(geometry2, new THREE.MeshBasicMaterial({wireframe: true, color: 0xff0000}))
 
 scene.add(mesh2)
+
+ligui.add(mesh.rotation, 'x', 0, 2 )
+ligui.add(mesh.rotation, 'y', 0, 2 )
+ligui.add(mesh.rotation, 'z', 0, 2 )
 
 function animate(){
     
