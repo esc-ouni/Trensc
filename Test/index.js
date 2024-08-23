@@ -1,142 +1,86 @@
-// Scene Mesh(objects) Camera Renderer
-
-// Mesh
-// - geometry
-// - material
-
 import * as THREE from 'three';
 
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import * as lil_gui from 'lil-gui';
-import * as dat_gui from "dat.gui";
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import * as gui from 'lil-gui';
 
-const ligui = new dat_gui.GUI()
+const ligui = new gui.GUI(); 
 
-
-const textureloader = new THREE.TextureLoader();
-const texture = textureloader.load('./Abstract/ball2.jpeg');
-// const texture1 = textureloader.load('./Abstract/Abstract_010_ambientOcclusion.jpg');
-// const texture2 = textureloader.load('./Abstract/Abstract_010_basecolor.jpg');
-// const texture3 = textureloader.load('./Abstract/Abstract_010_height.png');
-// const texture4 = textureloader.load('./Abstract/Abstract_010_normal.jpg');
-// const texture5 = textureloader.load('./Abstract/Abstract_010_roughness.jpg');
-// const texture6 = textureloader.load('./Abstract/Material_1374.jpg');
-
-//yellow
-// const texture1 = textureloader.load('./Models/ping_pong_ball/textures/Material_40_baseColor.png');
-// const texture2 = textureloader.load('./Models/ping_pong_ball/textures/Material_40_metallicRoughness.png');
-// const texture3 = textureloader.load('./Models/ping_pong_ball/textures/Material_40_normal.png');
-
-
-
-// Scene, Mesh (Geometry and Material), Camera, Renderer
 const scene = new THREE.Scene();
 
-const geometry = new THREE.SphereGeometry(2, 90, 90);
-
-const material = new THREE.MeshStandardMaterial({ color: 'white', side: THREE.DoubleSide, map:texture});
-
-// const material = new THREE.MeshPhongMaterial({
-//     map: texture1, // Base color
-//     normalMap: texture3, // Normal map
-//     roughnessMap: texture2, // Roughness map
-//     side: THREE.DoubleSide
-// });
-
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
-
-const light = new THREE.DirectionalLight( 0xFFFFFF );
-scene.add( light );
-const helper = new THREE.DirectionalLightHelper( light, 5 );
-scene.add( helper );
-
-const aspect = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-};
-
-const camera = new THREE.PerspectiveCamera(90, aspect.width / aspect.height, 1, 2000);
-camera.lookAt(mesh.position)
-camera.position.x = 8;
-camera.position.y = 8;
-camera.position.z = 16;
-scene.add(camera);
-
-ligui.add(camera.position, 'x', 1, 100).name('Ease')
-ligui.add(material, 'wireframe')
-
-ligui.add(mesh, 'visible')
-
-// ligui.addColor(material, 'color')
-
-const axeshelper = new THREE.AxesHelper(25)
-scene.add(axeshelper);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/ window.innerHeight, 1, 500);
 
 const canvas = document.getElementById('Renderer');
-
-const renderer = new THREE.WebGLRenderer({ canvas: canvas });
-
+const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
+
+//load textures
+const texture_loader         = new THREE.TextureLoader(); 
+const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
+const first_gradient_texture = texture_loader.load('./Materials/static/textures/gradients/3.jpg');
+
+const door_alpha            = texture_loader.load('./Materials/static/textures/door/alpha.jpg');
+const door_ambientOcclusion = texture_loader.load('./Materials/static/textures/door/ambientOcclusion.jpg');
+const door_color            = texture_loader.load('./Materials/static/textures/door/color.jpg');
+const door_height           = texture_loader.load('./Materials/static/textures/door/height.jpg');
+const door_roughness        = texture_loader.load('./Materials/static/textures/door/roughness.jpg');
+const door_normal           = texture_loader.load('./Materials/static/textures/door/normal.jpg');
+const door_metalness        = texture_loader.load('./Materials/static/textures/door/metalness.jpg');
+
+const material = new THREE.MeshStandardMaterial(/*{matcap:first_meta_texture}*/)
+material.side   = THREE.DoubleSide
+material.matcap = first_meta_texture;
+
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(1.5, 50, 50), material);
+const donut  = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.5, 16, 100 ), material);
+const plane  = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), material);
+
+// enviroment MApping
+const rgbeLoader = new RGBELoader();
+
+rgbeLoader.load('./Abstract/neon_photostudio_8k.pic', (enviroment_map) => {
+    
+    enviroment_map.mapping = THREE.EquirectangularReflectionMapping
+
+    scene.background  = enviroment_map;
+    scene.environment = enviroment_map;
+})
+
+donut.position.x += 5;
+plane.position.x -= 5;
+
+scene.add(sphere, donut, plane);
+ 
+camera.position.set(0, 0, 26);
 
 const controls = new OrbitControls(camera, canvas);
 
-controls.enableDamping = true;
+controls.update()
+
+renderer.render(scene, camera);
+
+ligui.add(material, 'roughness', 0, 1)
+ligui.add(material, 'metalness', 0, 1)
 
 const clock = new THREE.Clock();
+function Animate() {
+    const c = clock.getDelta();
+    sphere.rotation.x += 0.1 * c;
+    plane.rotation.x  += 0.1 * c;
+    donut.rotation.x  += 0.1 * c;
 
-document.addEventListener('dblclick', () => 
-{
-    if(!document.fullscreenElement)
-        canvas.requestFullscreen();
-    else
-        document.exitFullscreen();
-});
+    sphere.rotation.y -= 0.15 * c;
+    plane.rotation.y  -= 0.15 * c;
+    donut.rotation.y  -= 0.15 * c;
 
-const  positionarray = new Float32Array([
-    0,0,0,
-    0,5,0,
-    5,0,0
-])
 
-const positionAttribute = new THREE.BufferAttribute(positionarray, 3)
-
-const geometry2 = new THREE.BufferGeometry()
-
-geometry2.setAttribute('position', positionAttribute)
-
-const mesh2 = new THREE.Mesh(geometry2, new THREE.MeshBasicMaterial({wireframe: true, color: 0xff0000}))
-
-scene.add(mesh2)
-
-ligui.add(mesh.rotation, 'x', 0, 2 )
-ligui.add(mesh.rotation, 'y', 0, 2 )
-ligui.add(mesh.rotation, 'z', 0, 2 )
-
-function animate(){
-    
-    const c = clock.getDelta() * 10
-    
-    mesh.position.x += (0.05  * c);
-    mesh.position.y = Math.sin(clock.getElapsedTime() * 2) * 5;
-    
-    mesh.rotation.x += (0.04 * c);
-    mesh.rotation.y += (0.04 * c);
-    mesh.rotation.z += (0.04 * c);
-    
-    if (mesh.position.x > 10)
-        mesh.position.x = -20
-    
     controls.update();
 
     camera.aspect = window.innerWidth/ window.innerHeight;
     camera.updateProjectionMatrix();
-    
     renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+    requestAnimationFrame(Animate)
 }
 
-animate(camera)
+Animate();
