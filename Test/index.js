@@ -6,7 +6,45 @@ import * as gui from 'lil-gui';
 
 const ligui = new gui.GUI(); 
 
+
+//3D Text
+import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+const fontloader = new FontLoader();
 const scene = new THREE.Scene();
+const texture_loader         = new THREE.TextureLoader(); 
+const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
+
+fontloader.load(
+	'./helvetiker_regular.typeface.json',
+    (font) => {
+        const geometry = new TextGeometry( 'Soufiane', {
+            font: font,
+            size: 0.5,
+            height: 0.2,
+            curveSegments: 5,
+            bevelEnabled: true,
+            // depth: 5,
+            bevelThickness: 0.03,
+            bevelSize: 0.02,
+            bevelOffset: 0,
+            bevelSegments: 4
+        
+        }
+    );
+    geometry.center(); 
+    const textmaterial = new THREE.MeshStandardMaterial();
+    textmaterial.metalness = 1;
+    textmaterial.roughness = 0;
+    textmaterial.side       = THREE.DoubleSide;
+    textmaterial.matcap = first_meta_texture;
+    const text = new THREE.Mesh(geometry, textmaterial);
+    scene.add(text);
+}
+);
+//3D Text
+
 
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth/ window.innerHeight, 1, 500);
 
@@ -15,8 +53,8 @@ const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 //load textures
-const texture_loader         = new THREE.TextureLoader(); 
-const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
+// const texture_loader         = new THREE.TextureLoader(); 
+// const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
 const first_gradient_texture = texture_loader.load('./Materials/static/textures/gradients/3.jpg');
 
 const door_alpha            = texture_loader.load('./Materials/static/textures/door/alpha.jpg');
@@ -27,7 +65,7 @@ const door_roughness        = texture_loader.load('./Materials/static/textures/d
 const door_normal           = texture_loader.load('./Materials/static/textures/door/normal.jpg');
 const door_metalness        = texture_loader.load('./Materials/static/textures/door/metalness.jpg');
 
-const material = new THREE.MeshStandardMaterial(/*{matcap:first_meta_texture}*/)
+const material  = new THREE.MeshStandardMaterial(/*{matcap:first_meta_texture}*/)
 material.side   = THREE.DoubleSide
 material.matcap = first_meta_texture;
 
@@ -41,7 +79,7 @@ const rgbeLoader = new RGBELoader();
 rgbeLoader.load('./Abstract/neon_photostudio_8k.pic', (enviroment_map) => {
     
     enviroment_map.mapping = THREE.EquirectangularReflectionMapping
-
+    
     scene.background  = enviroment_map;
     scene.environment = enviroment_map;
 })
@@ -49,8 +87,8 @@ rgbeLoader.load('./Abstract/neon_photostudio_8k.pic', (enviroment_map) => {
 donut.position.x += 5;
 plane.position.x -= 5;
 
-scene.add(sphere, donut, plane);
- 
+// scene.add(sphere, donut, plane);
+
 camera.position.set(0, 0, 26);
 
 const controls = new OrbitControls(camera, canvas);
@@ -58,7 +96,8 @@ const controls = new OrbitControls(camera, canvas);
 controls.update()
 
 renderer.render(scene, camera);
-
+material.metalness = 1;
+material.roughness = 0;
 ligui.add(material, 'roughness', 0, 1)
 ligui.add(material, 'metalness', 0, 1)
 
