@@ -21,7 +21,7 @@ fontloader.load(
     (font) => {
         const geometry = new TextGeometry( 'Soufiane', {
             font: font,
-            size: 0.5,
+            size: 1,
             depth: 0.2,
             curveSegments: 5,
             bevelEnabled: true,
@@ -118,6 +118,9 @@ for (let i = 0; i < 100; i++){
     donuto.position.x = 12.5 - (Math.random() * 25);
     donuto.position.y = 12.5 - (Math.random() * 25);
     donuto.position.z = 12.5 - (Math.random() * 25);
+    let c = Math.random() * 10;
+    donuto.rotation.x += c;
+    donuto.rotation.y -= c;
     scene.add(donuto);
 }
 
