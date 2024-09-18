@@ -22,7 +22,7 @@ fontloader.load(
         const geometry = new TextGeometry( 'Soufiane', {
             font: font,
             size: 0.5,
-            height: 0.2,
+            depth: 0.2,
             curveSegments: 5,
             bevelEnabled: true,
             // depth: 5,
@@ -46,7 +46,7 @@ fontloader.load(
 //3D Text
 
 
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth/ window.innerHeight, 1, 500);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/ window.innerHeight, 0.0001, 1000);
 
 const canvas = document.getElementById('Renderer');
 const renderer = new THREE.WebGLRenderer({canvas});
@@ -102,6 +102,31 @@ ligui.add(material, 'roughness', 0, 1)
 ligui.add(material, 'metalness', 0, 1)
 
 const clock = new THREE.Clock();
+
+
+
+//ADD donuts
+
+const MATT = new THREE.MeshStandardMaterial();
+MATT.map = first_meta_texture;
+MATT.metalness = 1;
+MATT.roughness = 0;
+const GEom = new THREE.TorusGeometry(0.5, 0.2, 16, 100);
+
+for (let i = 0; i < 100; i++){
+    let donuto = new THREE.Mesh(GEom, MATT);
+    donuto.position.x = 12.5 - (Math.random() * 25);
+    donuto.position.y = 12.5 - (Math.random() * 25);
+    donuto.position.z = 12.5 - (Math.random() * 25);
+    scene.add(donuto);
+}
+
+//ADD donuts
+
+
+
+
+
 function Animate() {
     const c = clock.getDelta();
     sphere.rotation.x += 0.1 * c;
