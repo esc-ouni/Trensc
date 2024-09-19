@@ -6,43 +6,43 @@ import * as gui from 'lil-gui';
 
 const ligui = new gui.GUI(); 
 
+const texture_loader         = new THREE.TextureLoader(); 
+
+const scene = new THREE.Scene();
 
 //3D Text
-import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+// import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js';
+// import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-const fontloader = new FontLoader();
-const scene = new THREE.Scene();
-const texture_loader         = new THREE.TextureLoader(); 
-const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
+// const fontloader = new FontLoader();
 
-fontloader.load(
-	'./helvetiker_regular.typeface.json',
-    (font) => {
-        const geometry = new TextGeometry( 'Soufiane', {
-            font: font,
-            size: 1,
-            depth: 0.2,
-            curveSegments: 5,
-            bevelEnabled: true,
-            // depth: 5,
-            bevelThickness: 0.03,
-            bevelSize: 0.02,
-            bevelOffset: 0,
-            bevelSegments: 4
+// fontloader.load(
+// 	'./helvetiker_regular.typeface.json',
+//     (font) => {
+//         const geometry = new TextGeometry( 'Soufiane', {
+//             font: font,
+//             size: 1,
+//             depth: 0.2,
+//             curveSegments: 5,
+//             bevelEnabled: true,
+//             // depth: 5,
+//             bevelThickness: 0.03,
+//             bevelSize: 0.02,
+//             bevelOffset: 0,
+//             bevelSegments: 4
         
-        }
-    );
-    geometry.center(); 
-    const textmaterial = new THREE.MeshStandardMaterial();
-    textmaterial.metalness = 1;
-    textmaterial.roughness = 0;
-    textmaterial.side       = THREE.DoubleSide;
-    textmaterial.matcap = first_meta_texture;
-    const text = new THREE.Mesh(geometry, textmaterial);
-    scene.add(text);
-}
-);
+//         }
+//     );
+//     geometry.center(); 
+//     const textmaterial = new THREE.MeshStandardMaterial();
+//     textmaterial.metalness = 1;
+//     textmaterial.roughness = 0;
+//     textmaterial.side       = THREE.DoubleSide;
+//     textmaterial.matcap = first_meta_texture;
+//     const text = new THREE.Mesh(geometry, textmaterial);
+//     scene.add(text);
+// }
+// );
 //3D Text
 
 
@@ -54,7 +54,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 //load textures
 // const texture_loader         = new THREE.TextureLoader(); 
-// const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
+const first_meta_texture     = texture_loader.load('./Materials/static/textures/matcaps/3.png');
 const first_gradient_texture = texture_loader.load('./Materials/static/textures/gradients/3.jpg');
 
 const door_alpha            = texture_loader.load('./Materials/static/textures/door/alpha.jpg');
@@ -74,20 +74,22 @@ const donut  = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.5, 16, 100 ), mater
 const plane  = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), material);
 
 // enviroment MApping
-const rgbeLoader = new RGBELoader();
+// const rgbeLoader = new RGBELoader();
 
-rgbeLoader.load('./Abstract/neon_photostudio_8k.pic', (enviroment_map) => {
+// rgbeLoader.load('./Abstract/neon_photostudio_8k.pic', (enviroment_map) => {
     
-    enviroment_map.mapping = THREE.EquirectangularReflectionMapping
+//         enviroment_map.mapping = THREE.EquirectangularReflectionMapping
     
-    scene.background  = enviroment_map;
-    scene.environment = enviroment_map;
-})
+//         scene.background  = enviroment_map;
+//         scene.environment = enviroment_map;
+//     })
 
+// enviroment MApping
+    
 donut.position.x += 5;
 plane.position.x -= 5;
 
-// scene.add(sphere, donut, plane);
+scene.add(sphere, donut, plane);
 
 camera.position.set(0, 0, 26);
 
@@ -107,22 +109,22 @@ const clock = new THREE.Clock();
 
 //ADD donuts
 
-const MATT = new THREE.MeshStandardMaterial();
-MATT.map = first_meta_texture;
-MATT.metalness = 1;
-MATT.roughness = 0;
-const GEom = new THREE.TorusGeometry(0.5, 0.2, 16, 100);
+// const MATT = new THREE.MeshStandardMaterial();
+// MATT.map = first_meta_texture;
+// MATT.metalness = 1;
+// MATT.roughness = 0;
+// const GEom = new THREE.TorusGeometry(0.5, 0.2, 16, 100);
 
-for (let i = 0; i < 100; i++){
-    let donuto = new THREE.Mesh(GEom, MATT);
-    donuto.position.x = 12.5 - (Math.random() * 25);
-    donuto.position.y = 12.5 - (Math.random() * 25);
-    donuto.position.z = 12.5 - (Math.random() * 25);
-    let c = Math.random() * 10;
-    donuto.rotation.x += c;
-    donuto.rotation.y -= c;
-    scene.add(donuto);
-}
+// for (let i = 0; i < 100; i++){
+//     let donuto = new THREE.Mesh(GEom, MATT);
+//     donuto.position.x = 12.5 - (Math.random() * 25);
+//     donuto.position.y = 12.5 - (Math.random() * 25);
+//     donuto.position.z = 12.5 - (Math.random() * 25);
+//     let c = Math.random() * 10;
+//     donuto.rotation.x += c;
+//     donuto.rotation.y -= c;
+//     scene.add(donuto);
+// }
 
 //ADD donuts
 
