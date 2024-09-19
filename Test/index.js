@@ -13,7 +13,7 @@ const canvas = document.getElementById('Renderer');
 const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-const material  = new THREE.MeshBasicMaterial()
+const material  = new THREE.MeshStandardMaterial()
 material.side   = THREE.DoubleSide
 
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(1.5, 50, 50), material);
@@ -44,6 +44,18 @@ material.roughness = 0;
 ligui.add(material, 'roughness', 0, 1)
 ligui.add(material, 'metalness', 0, 1)
 
+//light
+const light = new THREE.SpotLight('purple', 500);
+scene.add(light);
+ligui.add(light.position, 'x', 0, 10)
+ligui.add(light.position, 'y', 0, 10)
+ligui.add(light.position, 'z', 0, 10)
+
+const spotLight_Helper = new THREE.SpotLightHelper(light);
+scene.add(spotLight_Helper);
+
+//light
+
 const clock = new THREE.Clock();
 
 function Animate() {
@@ -62,6 +74,9 @@ function Animate() {
     camera.aspect = window.innerWidth/ window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+    spotLight_Helper.update();
+
     renderer.render(scene, camera);
     requestAnimationFrame(Animate)
 }
