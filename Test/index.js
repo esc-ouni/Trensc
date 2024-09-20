@@ -85,13 +85,18 @@ const clock = new THREE.Clock();
 
 function Animate() {
     const c = clock.getDelta();
-    sphere.rotation.x += 0.1 * c;
+    // sphere.rotation.x += 0.1 * c;
     plane.rotation.x  += 0.1 * c;
     donut.rotation.x  += 0.1 * c;
-
-    sphere.rotation.y -= 0.15 * c;
+    
+    // sphere.rotation.y -= 0.15 * c;
     plane.rotation.y  -= 0.15 * c;
     donut.rotation.y  -= 0.15 * c;
+
+    const elapsed = clock.getElapsedTime()
+    sphere.position.x = 1.5 * Math.cos(elapsed);
+    sphere.position.z = 1.5 * Math.sin(elapsed);
+    sphere.position.y = Math.abs(3 * Math.sin(elapsed));
 
 
     controls.update();
