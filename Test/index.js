@@ -32,29 +32,50 @@ const axes_helper = new THREE.AxesHelper(15);
 
 scene.add(axes_helper)
 
-scene.add(ground, sphere, donut, plane);
 
 camera.position.set(12, 8, 21);
 
 const controls = new OrbitControls(camera, canvas);
 controls.update()
 
-material.metalness = 1;
+material.metalness = 0.582;
 material.roughness = 0;
 ligui.add(material, 'roughness', 0, 1)
 ligui.add(material, 'metalness', 0, 1)
 
 //light
-const light = new THREE.SpotLight('purple', 500);
+const light = new THREE.SpotLight('white', 250);
+light.position.x = 3.24;
+light.position.y = 10;
+light.position.z = 6.68;
 scene.add(light);
 ligui.add(light.position, 'x', 0, 10)
 ligui.add(light.position, 'y', 0, 10)
 ligui.add(light.position, 'z', 0, 10)
+ligui.add(light, 'intensity', 0, 400)
 
 const spotLight_Helper = new THREE.SpotLightHelper(light);
-scene.add(spotLight_Helper);
+// scene.add(spotLight_Helper);
 
 //light
+
+//shadow
+
+light.castShadow = true;
+
+renderer.shadowMap.enabled = true;
+
+sphere.castShadow   = true;
+donut.castShadow    = true;
+plane.castShadow    = true;
+
+ground.receiveShadow = true;
+
+//shadow
+
+scene.add(ground, sphere, donut, plane);
+
+
 
 const clock = new THREE.Clock();
 
