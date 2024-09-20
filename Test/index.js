@@ -63,6 +63,10 @@ const spotLight_Helper = new THREE.SpotLightHelper(light);
 
 light.castShadow = true;
 
+light.shadow.mapSize.width = 1024 * 4;
+light.shadow.mapSize.height = 1024 * 4;
+
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.shadowMap.enabled = true;
 
 sphere.castShadow   = true;
